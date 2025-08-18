@@ -14,8 +14,7 @@
     "version": "0.0.3",
     "repository": {
         "type": "git",
-        "url": "https://github.com/FrancoJavierGadea/Components-1812.git",
-        "directory": "src/Utils/JSONVisualizer"
+        "url": "https://github.com/components-1812/json-visualizer"
     },
     "type": "module",
     "scripts": {
