@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 - Custom Tokenizer</title>
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+
+        section {
+            width: 450px;
+            height: 480px;
+            margin: 0 auto;
+            border: 1px solid rgb(141, 11, 11);
+            overflow:auto;
+            resize: both;
+        }
+        custom-json-visualizer:not([ready-links]) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <custom-json-visualizer>
+            {
+                "name": "John Doe",
+                "age": 30,
+                "isStudent": false,
+                "isTeacher": true,
+                "currentWork": null,
+                "courses": ["Math", "Science"],
+                "address": {
+                    "street": "123 Main St",
+                    "city": "Anytown"
+                },
+                "grades": [ 85, 92, 78 ]
+            }
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer render-deep="3">
+            {
+                "company": {
+                    "name": "Acme Corp",
+                    "location": "Buenos Aires",
+                    "departments": [
+                        {
+                            "name": "Desarrollo",
+                            "manager": {
+                                "name": "Laura Gómez",
+                                "email": "laura@acme.com"
+                            },
+                            "projects": [
+                                {
+                                    "id": "P001",
+                                    "name": "Plataforma Web",
+                                    "status": "en progreso",
+                                    "milestones": [
+                                        {
+                                            "name": "Diseño UI",
+                                            "completed": true,
+                                            "tasks": [
+                                                {
+                                                    "id": "T1001",
+                                                    "title": "Mockups iniciales",
+                                                    "assignedTo": {
+                                                    "id": "U001",
+                                                    "name": "Franco Gadea",
+                                                    "role": {
+                                                        "name": "Diseñador UX",
+                                                        "level": {
+                                                            "id": 3,
+                                                            "description": "Senior UX con experiencia en accesibilidad"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        </custom-json-visualizer>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.28.2/babel.min.js"></script>
+    
+    <script type="module">
+
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css',
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+        console.log(window.Babel);
+
+        //Define JSON Tokenizer
+        JSONVisualizer.getTokens = async (rawJson) => {
+
+            const {parse} = Babel.packages.parser;
+
+            const tokenizer = parse(`(${rawJson})`, { tokens: true });
+
+            const result = tokenizer.tokens.slice(1, -2);
+
+            const tokens = [];
+            
+            for (let i = 0; i < result.length; i++) {
+
+                const {type, value} = result[i];
+                
+                if(type.label === '{'){
+                    tokens.push({type: 'brace-open', value: '{', tags: ['brace']});
+                }
+                if(type.label === '}'){
+                    tokens.push({type: 'brace-close', value: '}', tags: ['brace']});
+                }
+                if(type.label === '['){
+                    tokens.push({type: 'bracket-open', value: '[', tags: ['bracket']});
+                }
+                if(type.label === ']'){
+                    tokens.push({type: 'bracket-close', value: ']', tags: ['bracket']});
+                }
+                if(type.label === ':'){
+                    tokens.push({type: 'colon', value: ':', tags: ['colon']});
+                }
+                if(type.label === ','){
+                    tokens.push({type: 'comma', value: ',', tags: ['comma']});
+                }
+                if(type.label === 'string'){
+                    tokens.push({type: 'string', value: `"${value}"`, tags: ['string']});
+                }
+                if(type.label === 'num'){
+                    tokens.push({type: 'number', value: value, tags: ['number']});
+                }
+                if(type.label === 'false' || type.label === 'true'){
+                    tokens.push({type: 'boolean', value: value, tags: ['boolean']});
+                }
+                if(type.label === 'null'){
+                    tokens.push({type: 'null', value: 'null', tags: ['null']});
+                }
+            }
+
+            return tokens;
+        }
+
+        //Load the stylesheet
+        JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
+
+        customElements.define('custom-json-visualizer', JSONVisualizer);
+    </script>
+</body>
+</html>

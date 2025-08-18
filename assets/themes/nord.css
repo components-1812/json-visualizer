@@ -1,0 +1,40 @@
+/*
+	JSONVisualizer nord theme
+	version: 0.0.3
+*/
+custom-json-visualizer.nord {
+    --json-background: #2e3440;
+    --json-foreground: #d8dee9;
+
+    --json-key: #81a1c1;
+    --json-string: #a3be8c;
+    --json-number: #b48ead;
+    --json-boolean: #88c0d0;
+    --json-null: #d08770;
+    
+	--json-unknown: #d14f49;
+
+    --json-brace: #eceff4;
+    --json-bracket: #eceff4;
+    --json-comma: #4c566a;
+    --json-colon: #4c566a;
+
+    --json-url-color: inherit;
+    --json-url-visited-color: inherit;
+    --json-url-hover-color: inherit;  
+    --json-url-text-decoration: underline;
+
+    --copy-button-color: #888;
+    --copy-button-hover-color: #fff;
+
+    --toggle-button-color: #888;
+    --toggle-button-hover-color: #fff;
+
+    --line-number-color: #4c566a;
+    --line-number-background: transparent;
+
+    --indentation-guides-lines-color: #3b4252;
+
+    --json-folded-message-color: #888;
+
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4 - Indentation guides lines</title>
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+
+        section {
+            width: 400px;
+            height: 480px;
+            margin: 0 auto;
+            border: 1px solid rgb(141, 11, 11);
+            overflow: hidden;
+            resize: both;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <custom-json-visualizer style="--indentation-guides-lines-color: #f124f1">
+            {
+                "name": "John Doe",
+                "age": null,
+                "isStudent": false,
+                "courses": ["Math", "Science"],
+                "address": {
+                    "street": "123 Main St",
+                    "city": "Anytown"
+                },
+                "grades": [ 85, 92, 78 ],
+                "contact": {
+                    "email": "john.doe@example.com",
+                    "phone": "123-456-7890"
+                },
+                "active": true
+            }
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer indentation-guides-lines="none">
+            {
+                "name": "John Doe",
+                "age": null,
+                "isStudent": false,
+                "courses": ["Math", "Science"],
+                "address": {
+                    "street": "123 Main St",
+                    "city": "Anytown"
+                },
+                "grades": [ 85, 92, 78 ],
+                "contact": {
+                    "email": "john.doe@example.com",
+                    "phone": "123-456-7890"
+                },
+                "active": true
+            }
+        </custom-json-visualizer>
+    </section>
+
+    <script type="module">
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        //Load the stylesheet
+        JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
+
+        customElements.define('custom-json-visualizer', JSONVisualizer);
+    </script>
+</body>
+</html>

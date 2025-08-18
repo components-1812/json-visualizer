@@ -1,0 +1,41 @@
+/*
+    JSONVisualizer wizard theme
+    version: 0.0.3
+*/
+custom-json-visualizer.wizard {
+    --font: "Fira Code", Consolas, "Courier New", monospace;
+
+    --json-background: #1a1125;
+    --json-foreground: #f2e9ff;
+
+    --json-key: #caa9fa;
+    --json-string: #a0e8af;      
+    --json-number: #ffe084;      
+    --json-boolean: #9be7ff;     
+    --json-null: #eab0fc;     
+       
+	--json-unknown: #ff4fa3;
+
+    --json-brace: #ffd700;
+    --json-bracket: #ffd700;
+    --json-comma: #d4d4d4;
+    --json-colon: #d4d4d4;
+
+    --json-url-color: inherit;
+    --json-url-visited-color: inherit;
+    --json-url-hover-color: inherit;  
+    --json-url-text-decoration: underline;
+
+    --copy-button-color: #aa88cc;
+    --copy-button-hover-color: #ffffff;
+
+    --toggle-button-color: #aa88cc;
+    --toggle-button-hover-color: #ffffff;
+
+    --line-number-color: #715d8a;
+    --line-number-background: transparent;
+
+    --indentation-guides-lines-color: #392c4d;
+
+    --json-folded-message-color: #aa88cc;
+}

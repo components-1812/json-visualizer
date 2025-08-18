@@ -1,0 +1,39 @@
+/*
+    JSONVisualizer dracula theme
+    version: 0.0.3
+*/
+custom-json-visualizer.dracula {
+    --json-background: #282a36;
+    --json-foreground: #f8f8f2;
+
+    --json-key: #ff79c6;
+    --json-string: #f1fa8c;
+    --json-number: #bd93f9;
+    --json-boolean: #8be9fd;
+    --json-null: #50fa7b;
+
+	--json-unknown: #ff5555;
+
+    --json-brace: #f8f8f2;
+    --json-bracket: #f8f8f2;
+    --json-comma: #6272a4;
+    --json-colon: #6272a4;
+
+    --json-url-color: inherit;
+    --json-url-visited-color: inherit;
+    --json-url-hover-color: inherit;  
+    --json-url-text-decoration: underline;
+
+    --copy-button-color: #bbb;
+    --copy-button-hover-color: #fff;
+
+    --toggle-button-color: #bbb;
+    --toggle-button-hover-color: #fff;
+
+    --line-number-color: #6272a4;
+    --line-number-background: transparent;
+
+    --indentation-guides-lines-color: #44475a;
+
+    --json-folded-message-color: #bbb;
+}

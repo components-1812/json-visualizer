@@ -1,0 +1,39 @@
+/*
+    JSONVisualizer tokio-night theme
+    version: 0.0.3
+*/
+custom-json-visualizer.tokio-night {
+    --json-background: #1a1b26;
+    --json-foreground: #c0caf5;
+
+    --json-key: #7aa2f7;
+    --json-string: #9ece6a;
+    --json-number: #ff9e64;
+    --json-boolean: #7dcfff;
+    --json-null: #bb9af7;
+
+	--json-unknown: #db4b4b;
+
+    --json-brace: #c0caf5;
+    --json-bracket: #c0caf5;
+    --json-comma: #565f89;
+    --json-colon: #565f89;
+
+    --json-url-color: inherit;
+    --json-url-visited-color: inherit;
+    --json-url-hover-color: inherit;  
+    --json-url-text-decoration: underline;
+
+    --copy-button-color: #888;
+    --copy-button-hover-color: #fff;
+
+    --toggle-button-color: #888;
+    --toggle-button-hover-color: #fff;
+
+    --line-number-color: #565f89;
+    --line-number-background: transparent;
+
+    --indentation-guides-lines-color: #2f3549;
+
+    --json-folded-message-color: #888;
+}

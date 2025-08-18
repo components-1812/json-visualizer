@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/editor/editor.main.min.css">
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html {
+                height: 100%;
+            }
+            body {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+
+                & > * {
+                    flex-grow: 1;
+                }
+            }
+            .JSON-Editor {
+                margin: 20px auto;
+                border: 1px solid grey;
+            }
+    
+            .Results textarea {
+                margin: 20px auto;
+                border: 1px solid grey;
+            }
+        </style>
+    </head>
+    <body>
+
+        <section> 
+            <div class="JSON-Editor" style="width: 600px; height: 500px;"></div>
+        </section>
+
+        <section class="Results">
+
+            <textarea style="width: 600px; height: 500px;"></textarea>
+        </section>
+
+        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+        <script>
+
+            require.config({ paths: {vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs'} });
+
+            const {promise, resolve} = Promise.withResolvers();
+
+            window.getEditor = promise;
+
+            require(['vs/editor/editor.main'], function () {
+
+                const editor = monaco.editor.create(document.querySelector('.JSON-Editor'), {
+                	value: '',
+                	language: 'json',
+                    theme: 'vs-dark',
+                });
+
+                resolve(editor);
+            });
+		</script>
+        <script type="module">
+            const {JSONTokenizer} = await import('../../src/JSONTokenizer.js');
+    
+            const tokenizer = new JSONTokenizer();
+
+            function debounce(fn, delay) {
+                let timeout;
+                return (...args) => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => fn(...args), delay);
+                };
+            }
+
+            const onChange = debounce(() => {
+
+                const value = editor.getValue();
+
+                document.querySelector('.Results textarea').value = tokenizer._minifyJSON(value);
+
+            }, 1000);
+
+            const editor = await window.getEditor;
+
+            editor.onDidChangeModelContent(onChange);
+        </script>
+    </body>
+</html>

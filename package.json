@@ -1,0 +1,53 @@
+{
+    "name": "@components-1812/json-visualizer",
+    "description": "A web component for visualizing JSON data in a collapsible tree view.",
+    "keywords": [
+        "web-components",
+        "web-components-library",
+        "json",
+        "visualization",
+        "tree-view",
+        "collapsible"
+    ],
+    "author": "Franco Javier Gadea",
+    "license": "MIT",
+    "version": "0.0.3",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/FrancoJavierGadea/Components-1812.git",
+        "directory": "src/Utils/JSONVisualizer"
+    },
+    "type": "module",
+    "scripts": {
+        "test": "node --test",
+        "build": "node build.js"
+    },
+    "exports": {
+        ".": "./src/index.js",
+        "./index": "./src/index.js",
+        "./index.js": "./src/index.js",
+        "./JSONVisualizer": "./src/JSONVisualizer.js",
+        "./JSONVisualizer.js": "./src/JSONVisualizer.js",
+        "./JSONVisualizer.css": "./src/JSONVisualizer.css",
+        "./JSONTokenizer": "./src/JSONTokenizer.js",
+        "./JSONTokenizer.js": "./src/JSONTokenizer.js",
+        "./define": "./src/define.js",
+        "./define.js": "./src/define.js",
+        "./assets/*": "./assets/*",
+        "./src/*": "./src/*",
+        "./dist/*": "./dist/*"
+    },
+    "files": [
+        "src/*",
+        "dist/*",
+        "assets/themes/*",
+        "assets/icons/*",
+        "assets/preview.webp",
+        "assets/preview-2.webp"
+    ],
+    "main": "./src/JSONVisualizer.js",
+    "style": "./src/JSONVisualizer.css",
+    "devDependencies": {
+        "esbuild": "^0.25.9"
+    }
+}

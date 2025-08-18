@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 - Changing Themes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&family=Fira+Code:wght@300..700&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/themes/dark-default.css">
+    <link rel="stylesheet" href="../assets/themes/light-default.css">
+    <link rel="stylesheet" href="../assets/themes/monokai.css">
+    <link rel="stylesheet" href="../assets/themes/solarized-light.css">
+    <link rel="stylesheet" href="../assets/themes/solarized-dark.css">
+    <link rel="stylesheet" href="../assets/themes/dracula.css">
+    <link rel="stylesheet" href="../assets/themes/nord.css">
+    <link rel="stylesheet" href="../assets/themes/tokio-night.css">
+    <link rel="stylesheet" href="../assets/themes/iceberg.css">
+    <link rel="stylesheet" href="../assets/themes/wizard.css">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        section {
+            width: 450px;
+            height: 480px;
+            margin: 0 auto;
+            border: 1px solid rgb(141, 11, 11);
+            overflow: hidden;
+            resize: both;
+        }
+
+        select {
+            width: 450px;
+            font-size: 18pt;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <custom-json-visualizer>
+            {
+                "name": "John Doe",
+                "age": null,
+                "isStudent": false,
+                "courses": ["Math", "Science"],
+                "address": {
+                    "street": "123 Main St",
+                    "city": "Anytown"
+                },
+                "grades": [ 85, 92, 78 ],
+                "contact": {
+                    "email": "john.doe@example.com",
+                    "phone": "123-456-7890"
+                },
+                "active": true
+            }
+        </custom-json-visualizer>
+    </section>
+
+    
+    <select>
+        <option value="default">default</option>
+        <option value="dark-default">dark-default</option>
+        <option value="light-default">light-default</option>
+        <option value="monokai">monokai</option>
+        <option value="solarized-light">solarized-light</option>
+        <option value="solarized-dark">solarized-dark</option>
+        <option value="dracula">dracula</option>
+        <option value="nord">nord</option>
+        <option value="tokio-night">tokio-night</option>
+        <option value="iceberg">iceberg</option>
+        <option value="wizard">wizard</option>
+    </select>
+
+    <script type="module">
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        //Load the stylesheet
+        JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
+
+        customElements.define('custom-json-visualizer', JSONVisualizer);
+    </script>
+    <script>
+        const selectElement = document.querySelector('select');
+
+        selectElement.addEventListener('change', (event) => {
+            const theme = event.target.value;
+            
+            const visualizer = document.querySelector('custom-json-visualizer');
+            visualizer.className = theme !== 'default' ? theme : '';
+        });
+    </script>
+</body>
+</html>

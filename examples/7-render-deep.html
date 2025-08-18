@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7 - render deep</title>
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+
+        section {
+            width: 1000px;
+            height: 480px;
+            margin: 0 auto;
+            border: 1px solid rgb(141, 11, 11);
+            overflow: hidden;
+            resize: both;
+        }
+        custom-json-visualizer:not([ready-links]) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <custom-json-visualizer class="contain" render-deep="3">
+            {
+                "company": {
+                    "name": "Acme Corp",
+                    "location": "Buenos Aires",
+                    "departments": [
+                        {
+                            "name": "Desarrollo",
+                            "manager": {
+                                "name": "Laura Gómez",
+                                "email": "laura@acme.com"
+                            },
+                            "projects": [
+                                {
+                                    "id": "P001",
+                                    "name": "Plataforma Web",
+                                    "status": "en progreso",
+                                    "milestones": [
+                                        {
+                                            "name": "Diseño UI",
+                                            "completed": true,
+                                            "tasks": [
+                                                {
+                                                    "id": "T1001",
+                                                    "title": "Mockups iniciales",
+                                                    "assignedTo": {
+                                                    "id": "U001",
+                                                    "name": "Franco Gadea",
+                                                    "role": {
+                                                        "name": "Diseñador UX",
+                                                        "level": {
+                                                            "id": 3,
+                                                            "description": "Senior UX con experiencia en accesibilidad"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        </custom-json-visualizer>
+    </section>
+    
+    <script type="module">
+
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        //Load the stylesheet
+        JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
+
+        customElements.define('custom-json-visualizer', JSONVisualizer);
+    </script>
+</body>
+</html>

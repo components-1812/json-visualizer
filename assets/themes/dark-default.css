@@ -1,0 +1,42 @@
+/*
+    JSONVisualizer dark-default theme
+    version: 0.0.3
+*/
+custom-json-visualizer.default-dark, custom-json-visualizer.dark {
+
+    --font: Consolas, "Courier New", monospace, sans-serif;
+
+    --json-background: #222;
+    --json-foreground: #eee;
+
+    --json-key: #9cdcfe;           
+    --json-string: #ce9178;        
+    --json-number: #b5cea8;        
+    --json-boolean: #569cd6;       
+    --json-null: #dcdcaa;  
+
+	--json-unknown: #f44747;
+
+    --json-brace: #ffd700;         
+    --json-bracket: #ffd700;       
+    --json-comma: #d4d4d4;         
+    --json-colon: #d4d4d4;
+    
+    --json-url-color: inherit;
+    --json-url-visited-color: inherit;
+    --json-url-hover-color: inherit;  
+    --json-url-text-decoration: underline;
+
+    --copy-button-color: #777;
+    --copy-button-hover-color: #fff;
+
+    --toggle-button-color: #777;
+    --toggle-button-hover-color: #fff;
+
+    --line-number-color: #777;
+    --line-number-background: transparent;
+
+    --indentation-guides-lines-color: #444;
+
+    --json-folded-message-color: #777;
+}

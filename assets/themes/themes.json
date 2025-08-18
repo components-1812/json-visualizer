@@ -1,0 +1,95 @@
+{
+	"version": "0.0.3",
+	"themes": [
+		{
+			"name": "wizard",
+			"mode": "dark",
+			"path": "./src/assets/themes/wizard.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/wizard.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/wizard.css"
+			]
+		},
+		{
+			"name": "tokio-night",
+			"mode": "dark",
+			"path": "./src/assets/themes/tokio-night.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/tokio-night.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/tokio-night.css"
+			]
+		},
+		{
+			"name": "solarized-light",
+			"mode": "light",
+			"path": "./src/assets/themes/solarized-light.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/solarized-light.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/solarized-light.css"
+			]
+		},
+		{
+			"name": "nord",
+			"mode": "dark",
+			"path": "./src/assets/themes/nord.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/nord.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/nord.css"
+			]
+		},
+		{
+			"name": "solarized-dark",
+			"mode": "dark",
+			"path": "./src/assets/themes/solarized-dark.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/solarized-dark.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/solarized-dark.css"
+			]
+		},
+		{
+			"name": "monokai",
+			"mode": "dark",
+			"path": "./src/assets/themes/monokai.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/monokai.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/monokai.css"
+			]
+		},
+		{
+			"name": "light-default",
+			"mode": "light",
+			"path": "./src/assets/themes/light-default.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/light-default.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/light-default.css"
+			]
+		},
+		{
+			"name": "iceberg",
+			"mode": "light",
+			"path": "./src/assets/themes/iceberg.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/iceberg.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/iceberg.css"
+			]
+		},
+		{
+			"name": "dracula",
+			"mode": "dark",
+			"path": "./src/assets/themes/dracula.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/dracula.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/dracula.css"
+			]
+		},
+		{
+			"name": "dark-default",
+			"mode": "dark",
+			"path": "./src/assets/themes/dark-default.css",
+			"cdn": [
+				"https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/assets/themes/dark-default.css",
+				"https://unpkg.com/@components-1812/json-visualizer@0.0.3/src/assets/themes/dark-default.css"
+			]
+		}
+	]
+}

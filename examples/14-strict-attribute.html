@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example 14 - incomplete json</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: minmax(300px, 1fr);
+            gap: 20px;
+        }
+
+        section {
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            min-width: 0;
+            margin: 0 auto;
+            border: 1px solid rgb(141, 11, 11);
+            overflow: hidden;
+            resize: both;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <custom-json-visualizer strict>
+            {
+                "name": "John Doe",
+                "age": null,
+                "isStudent": false,
+                "contact": {
+                    "email": "john.doe@example.com",
+                    "phone": "123-456-7890"
+                },
+                "active": true
+            }
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict>
+            {
+                "name": "John Doe",
+                "age": null,
+                "isStudent": false,
+                "courses": ["Math", "Science"],
+                "grades": [ 85, 92, 78 ],
+                "active": true
+            }
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="none">
+            {
+                "name": "John Doe",
+                "address": {
+                    "street": "123 Main St",
+                    "city": "Anytown"
+                },
+                "grades": [ 85, 92,
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="auto">
+            {
+                "name": "John Doe",
+                "grades": [ 85, 92, 78 ],
+                "contact": {
+                    "email": "john.doe@example
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="auto">
+            {
+                "name": "John Doe",
+                "age": null,
+                "isStudent": false,
+                "courses": ["Math", "Science"],
+                "address": {
+                    "street": "123 Main St",
+                    "city
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="auto">
+            {
+                "name": "John Doe",
+                "age": nu,
+                "isStudent": fal,
+                "isMaster": tru
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="auto">
+            {
+                "name": "John Doe",
+                "age": ll,
+                "isStudent": se,
+                "courses": [tr, fal, nu]
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="auto">
+            {
+                "name": "John Doe",
+                "age": ll,
+                "isStude : nul
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="auto">
+            {
+                "name": "John Doe",
+                "age": 154-447f
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="auto">
+            [
+                TRUE, FALSE, NULL, True, False, Null, nul"l, fal"s, true", false"
+            ]
+        </custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer strict="auto">
+            [
+                +12-44, 12d"45, 124f, 158-, 457d, 125er7
+            ]
+        </custom-json-visualizer>
+    </section>
+
+    <script type="module">
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        //Load the stylesheet
+        JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
+
+        customElements.define('custom-json-visualizer', JSONVisualizer);
+    </script>
+</body>
+</html>

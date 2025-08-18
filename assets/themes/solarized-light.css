@@ -1,0 +1,39 @@
+/*
+    JSONVisualizer solarized-light theme
+    version: 0.0.3
+*/
+custom-json-visualizer.solarized-light {
+    --json-background: #fdf6e3;
+    --json-foreground: #657b83;
+
+    --json-key: #268bd2;
+    --json-string: #2aa198;
+    --json-number: #859900;
+    --json-boolean: #cb4b16;
+    --json-null: #6c71c4;
+
+	--json-unknown: #dc322f;
+
+    --json-brace: #93a1a1;
+    --json-bracket: #93a1a1;
+    --json-comma: #586e75;
+    --json-colon: #586e75;
+
+    --json-url-color: inherit;
+    --json-url-visited-color: inherit;
+    --json-url-hover-color: inherit;  
+    --json-url-text-decoration: underline;
+
+    --copy-button-color: #586e75;
+    --copy-button-hover-color: #073642;
+
+    --toggle-button-color: #586e75;
+    --toggle-button-hover-color: #073642;
+
+    --line-number-color: #93a1a1;
+    --line-number-background: transparent;
+
+    --indentation-guides-lines-color: #eee8d5;
+
+    --json-folded-message-color: #586e75;
+}

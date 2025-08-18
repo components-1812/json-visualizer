@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONVisualizer example 1</title>
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        section {
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            border: 1px solid rgb(141, 11, 11);
+            overflow: hidden;
+            resize: both;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <custom-json-visualizer src="https://jsonplaceholder.typicode.com/todos/1"></custom-json-visualizer></custom-json-visualizer></custom-json-visualizer>
+    </section>
+
+    <select>
+        <option value="https://jsonplaceholder.typicode.com/todos/1">Option 1</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/2">Option 2</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/3">Option 3</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/4">Option 4</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/5">Option 5</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/6">Option 6</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/7">Option 7</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/8">Option 8</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/9">Option 9</option>
+        <option value="https://jsonplaceholder.typicode.com/todos/10">Option 10</option>
+    </select>
+
+    <script type="module">
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        //Load the stylesheet
+        JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
+
+        customElements.define('custom-json-visualizer', JSONVisualizer);
+    </script>
+    <script>
+        const select = document.querySelector('select');
+
+        select.addEventListener('change', (e) => {
+
+            const url = e.target.value;
+
+            const customJsonVisualizer = document.querySelector('custom-json-visualizer');
+
+            //customJsonVisualizer.src = url;
+            //customJsonVisualizer.loadJSON(url);
+
+            (async () => {
+
+                const response = await fetch(url);
+
+                const json = await response.text();
+
+                customJsonVisualizer.json = json;
+            })()
+        });
+    </script>
+</body>
+</html>

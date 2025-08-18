@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11 - detect urls</title>
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+
+        section {
+            margin: 0 auto;
+            border: 1px solid rgb(141, 11, 11);
+            overflow: hidden;
+            resize: both;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <custom-json-visualizer class="contain" urls="relative">
+            {
+                "absolute": [
+                    "http://example.com",
+                    "https://example.com/path?query=1#fragment",
+                    "ftp://files.example.com/download.zip",
+                    "http://localhost:8080/dashboard",
+                    "http://192.168.1.1/config"
+                ],
+                "relative": [
+                    "/about",
+                    "./contact.html",
+                    "../images/photo.png",
+                    "./scripts/app.js",
+                    "assets/styles.css"
+                ],
+                "mail": [
+                    "test@example.com",
+                    "info@domain.org?subject=Inquiry",
+                    "mailto:support@company.net?body=Hello%20there"
+                ],
+                "phone": [
+                    "+1-800-555-1234",
+                    "800-555-5678",
+                    "(800) 555-9012",
+                    "+44 20 7946 0958",
+                    "020 7946 0958"
+                ]
+            }
+        </custom-json-visualizer>
+    </section>
+
+
+    <script type="module">
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        //Load the stylesheet
+        JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
+
+        customElements.define('custom-json-visualizer', JSONVisualizer);
+    </script>
+</body>
+</html>

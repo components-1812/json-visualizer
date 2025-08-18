@@ -1,0 +1,42 @@
+/*
+    JSONVisualizer iceberg theme
+    version: 0.0.3
+*/
+custom-json-visualizer.iceberg {
+    --font: Consolas, "Courier New", monospace, sans-serif;
+
+    --json-background: #f0f8ff;
+    --json-foreground: #0a1e2b;
+
+    --json-key: #0088cc;
+    --json-string: #005577;
+    --json-number: #447799;
+    --json-boolean: #3366cc;
+    --json-null: #77aadd;
+    
+	--json-unknown: #bb4444;
+    
+    --json-brace: #225577;
+    --json-bracket: #225577;
+    --json-comma: #88aacc;
+    --json-colon: #88aacc;
+
+    --json-url-color: inherit;
+    --json-url-visited-color: inherit;
+    --json-url-hover-color: inherit;  
+    --json-url-text-decoration: underline;
+
+    --copy-button-color: #5588aa;
+    --copy-button-hover-color: #0a1e2b;
+
+    --toggle-button-color: #5588aa;
+    --toggle-button-hover-color: #0a1e2b;
+
+    --line-number-color: #aaccee;
+    --line-number-background: transparent;
+
+    --indentation-guides-lines-color: #dceff8;
+    
+    --json-folded-message-color: #5588aa;
+
+}

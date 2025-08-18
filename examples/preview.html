@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONVisualizer examples</title>
+
+    <link rel="stylesheet" href="../assets/themes/dark-default.css">
+    <link rel="stylesheet" href="../assets/themes/light-default.css">
+    <link rel="stylesheet" href="../assets/themes/monokai.css">
+    <link rel="stylesheet" href="../assets/themes/solarized-light.css">
+    <link rel="stylesheet" href="../assets/themes/solarized-dark.css">
+    <link rel="stylesheet" href="../assets/themes/dracula.css">
+    <link rel="stylesheet" href="../assets/themes/nord.css">
+    <link rel="stylesheet" href="../assets/themes/tokio-night.css">
+    <link rel="stylesheet" href="../assets/themes/iceberg.css">
+    <link rel="stylesheet" href="../assets/themes/wizard.css">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            box-sizing: border-box;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        section {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+        custom-json-visualizer:not([ready-links]) {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <section>
+        <custom-json-visualizer json='{"name": "John Doe", "age": null, "isStudent": true, "courses": ["Math", "Science"]}'></custom-json-visualizer>
+    
+        <custom-json-visualizer class="light-default">
+            {
+                "age": 30,
+                "isStudent": false,
+                "courses": ["Math", "Science"],
+                "address": {
+                    "street": "123 Main St",
+                    "city": "Anytown"
+                }
+            }
+        </custom-json-visualizer>
+
+        <custom-json-visualizer class="monokai" toggle-lines="none" line-numbers="none">{"active": true}</custom-json-visualizer>
+    </section>
+
+    <section>
+        <custom-json-visualizer class="dracula" toggle-lines="none">
+            {
+                "name": "John Doe",
+                "age": 30,
+                "isStudent": false,
+                "courses": ["Math", "Science"],
+                "address": {
+                    "street": "123 Main St",
+                    "city": "Anytown"
+                },
+                "grades": [ 85, 92, 78 ]
+            }
+        </custom-json-visualizer>
+
+        <custom-json-visualizer class="wizard" copy-button="none" indentation-guides-lines="none">
+            {
+                "username": "fran1812",
+                "followers": 1240,
+                "verified": true,
+                "bio": "Music producer & JS developer"
+            }
+        </custom-json-visualizer>
+    </section>
+
+
+    <section>
+        <custom-json-visualizer class="nord" render-deep="2">
+            {
+                "continent": "Europe",
+                "country": {
+                    "name": "Germany",
+                    "cities": [
+                        {
+                            "name": "Berlin",
+                            "population": 3769000
+                        },
+                        {
+                            "name": "Munich",
+                            "population": 1472000
+                        }
+                    ]
+                },
+                "currency": "EUR"
+            }
+        </custom-json-visualizer>
+
+        <custom-json-visualizer class="dracula">
+            {
+                "theme": "dracula",
+                "colors": {
+                    "background": "#282a36",
+                    "foreground": "#f8f8f2"
+                },
+                "darkMode": true
+            }
+        </custom-json-visualizer>
+
+        <custom-json-visualizer class="tokio-night" render-deep="1">
+            {
+                "library": {
+                    "name": "City Central",
+                    "sections": {
+                        "fiction": {
+                            "books": [
+                                { "title": "1984", "author": "Orwell" },
+                                { "title": "Brave New World", "author": "Huxley" }
+                            ]
+                        },
+                        "science": {
+                            "books": [
+                                { "title": "A Brief History of Time", "author": "Hawking" }
+                            ]
+                        }
+                    }
+                }
+            }
+        </custom-json-visualizer>
+    </section>
+
+    <script type="module">
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        //Load the stylesheet
+        JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
+
+        customElements.define('custom-json-visualizer', JSONVisualizer);
+    </script>
+</body>
+</html>

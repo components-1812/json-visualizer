@@ -1,0 +1,41 @@
+/*
+    JSONVisualizer monokai theme
+    version: 0.0.3
+*/
+custom-json-visualizer.monokai {
+
+    --json-background: #272822;
+    --json-foreground: #f8f8f2;
+
+    --json-key: #f92672;
+    --json-string: #e6db74;
+    --json-number: #ae81ff;
+    --json-boolean: #66d9ef;
+    --json-null: #fd971f;
+    
+	--json-unknown: #fd5ff1;
+
+    --json-brace: #f8f8f2;
+    --json-bracket: #f8f8f2;
+    --json-comma: #75715e;
+    --json-colon: #75715e;
+
+    --json-url-color: inherit;
+    --json-url-visited-color: inherit;
+    --json-url-hover-color: inherit;  
+    --json-url-text-decoration: underline;
+
+    --copy-button-color: #999;
+    --copy-button-hover-color: #fff;
+
+    --toggle-button-color: #999;
+    --toggle-button-hover-color: #fff;
+
+    --line-number-color: #75715e;
+    --line-number-background: transparent;
+
+    --indentation-guides-lines-color: #444;
+
+    --json-folded-message-color: #999;
+
+}
