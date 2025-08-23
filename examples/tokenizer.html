@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: minmax(300px, 1fr);
+            gap: 10px;
+        }
+        textarea {
+            border: none;
+            background-color: #000;
+            color: white;
+            outline: none;
+            resize: none;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <textarea name="json" id="editor" cols="30" rows="10"></textarea>
+
+    <custom-json-visualizer class="contain">
+        {
+            "name": "John Doe",
+            "age": null,
+            "isStudent": false,
+            "contact": {
+                "email": "john.doe@example.com",
+                "phone": "123-456-7890"
+            },
+            "active": true
+        }
+    </custom-json-visualizer>
+
+    <script type="module">
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        JSONVisualizer.define('custom-json-visualizer', {links: [JSONVisualizerCSS]});
+    </script>
+    <script type="module">
+
+        const editor = document.getElementById('editor');
+        const visualizer = document.querySelector('custom-json-visualizer');
+
+        editor.addEventListener('keydown', (e) => {
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const value = editor.value;
+           
+            // Tabulación
+            if (e.key === 'Tab') {
+
+                e.preventDefault();
+
+                const tabSize = 4;
+                editor.value = value.slice(0, start) + ' '.repeat(tabSize) + value.slice(end);
+                editor.selectionStart = editor.selectionEnd = start + tabSize;
+
+                return;
+            }
+            // Autocompletar
+            if(['{', '[', '(', '"', "'"].includes(e.key)){
+
+                e.preventDefault();
+
+                let insert = '';
+                let move = 1;
+
+                // Pares a autocompletar
+                switch(e.key) {
+                    case '{': insert = '{}'; break;
+                    case '[': insert = '[]'; break;
+                    case '(': insert = '()'; break;
+                    case '"': insert = '""'; break;
+                    case "'": insert = "''"; break;
+                }
+
+                editor.value = value.slice(0, start) + insert + value.slice(end);
+                editor.selectionStart = editor.selectionEnd = start + move;
+            }
+        });
+
+
+        function debounce(fn, delay = 300) {
+
+            let timeout;
+
+            return (...args) => {
+            
+                clearTimeout(timeout);
+
+                timeout = setTimeout(() => fn(...args), delay);
+            };
+        };
+
+        const onChange = debounce(async () => {
+
+            const tokens = await visualizer.constructor.getTokens(editor.value, {
+                detectColor: true,
+                detectURL: true,
+                strict: 'auto'
+            });
+
+            visualizer.renderJSON(tokens);
+
+        }, 1000);
+
+        editor.addEventListener('input', onChange);
+
+    </script>
+</body>
+</html>

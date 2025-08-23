@@ -47,6 +47,8 @@
     "main": "./src/JSONVisualizer.js",
     "style": "./src/JSONVisualizer.css",
     "devDependencies": {
-        "esbuild": "^0.25.9"
+        "esbuild": "^0.25.9",
+        "html-minifier-terser": "^7.2.0",
+        "minify-html-literals": "^1.3.5"
     }
 }

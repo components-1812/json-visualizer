@@ -105,7 +105,9 @@
         //Load the stylesheet
         JSONVisualizer.stylesSheets.links.push(JSONVisualizerCSS);
 
-        customElements.define('custom-json-visualizer', JSONVisualizer);
+        JSONVisualizer.define();
+
+        //customElements.define('custom-json-visualizer', JSONVisualizer);
     </script>
 </body>
 </html>

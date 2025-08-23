@@ -2,42 +2,41 @@
 
 export class CopyButton {
 
+    static className = "copy-button";
+    static icons = {
+        copy: () => document.createTextNode("Copy"),
+        copyDone: () => document.createTextNode("Done"),
+    };
+    static showDoneTimeout = 1000;
+
     #node = null;
 
     constructor(params = {}){
 
         const {
-            className = "copy-button",
-            icons = null,
             data = null,
-            showDoneTimeout = 1000
         } = params;
 
-        this.className = className;
-        this.icons = icons;
         this.data = data;
-        this.showDoneTimeout = showDoneTimeout;
     }
 
     render(){
         this.#node = document.createElement("button");
-        this.#node.classList.add(this.className);
+        this.#node.classList.add(CopyButton.className);
 
         //Copy Icon
         const copyIcon = document.createElement("div");
         copyIcon.classList.add("copy-icon");
 
-        this.icons?.copy ? copyIcon.append(this.icons.copy) : copyIcon.textContent = "Copy";
-
-        this.#node.append(copyIcon);
+        copyIcon.append(CopyButton.icons.copy());
 
         //Copy Done Icon
         const copyDoneIcon = document.createElement("div");
         copyDoneIcon.classList.add("copy-done-icon");
 
-        this.icons?.copyDone ? copyDoneIcon.append(this.icons.copyDone) : copyDoneIcon.textContent = "Done";
+        copyDoneIcon.append(CopyButton.icons.copyDone())
 
-        this.#node.append(copyDoneIcon);
+        this.#node.append(copyIcon, copyDoneIcon);
 
         //Listeners
         this.#node.addEventListener("click", this.#handleCopy);
@@ -47,7 +46,7 @@ export class CopyButton {
 
     #handleCopy = (e) => {
 
-        const data = typeof this.data === 'function' ? this.data() : this.data?.current;
+        const data = (typeof this.data === 'function') ? this.data() : this.data?.current;
 
         if(data){
 
@@ -66,7 +65,7 @@ export class CopyButton {
                     button.removeAttribute("copy-done");
                     button.disabled = false;
                     
-                }, this.showDoneTimeout);
+                }, CopyButton.showDoneTimeout);
                 
                 button.dispatchEvent(new CustomEvent("copy-done", { 
                     detail: { data },
@@ -82,13 +81,9 @@ export class CopyButton {
     }
 
     dispose(){
-        this.clearListeners();
+        this.#node?.removeEventListener("click", this.#handleCopy);
         this.#node?.remove();
         this.#node = null;
-    }
-
-    clearListeners(){
-        this.#node?.removeEventListener("click", this.#handleCopy);
     }
 
     //MARK: Getters

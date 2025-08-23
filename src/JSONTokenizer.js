@@ -45,6 +45,7 @@ export class JSONTokenizer {
     /**
      * 
      * @param {String} rawJSON 
+     * @param {{detectURL:Boolean, detectColor:Boolean, strict:Boolean}} options
      * @returns 
      */
     tokenize(rawJson, options = {}){
