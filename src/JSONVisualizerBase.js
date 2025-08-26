@@ -6,14 +6,14 @@ class JSONVisualizerBase extends HTMLElement {
     static VERSION = '0.0.3';
 	static DEFAULT_TAG_NAME = 'custom-json-visualizer';
 	static DEFAULT_ICONS = {
-		'toggle': `<svg data-name='toggle' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
+		'toggle': /*svg*/`<svg data-name='toggle' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
 			<path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708'/>
 		</svg>`,
-		'copy': `<svg data-name='copy' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
+		'copy': /*svg*/`<svg data-name='copy' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
 			<path d='M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z'/>
 			<path d='M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z'/>
 		</svg>`,
-		'copy-done': `<svg data-name='copy-done' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
+		'copy-done': /*svg*/`<svg data-name='copy-done' width='16' height='16' fill='currentColor' viewBox='0 0 16 16'>
 			<path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/>
 		</svg>`
 	};
@@ -59,11 +59,21 @@ class JSONVisualizerBase extends HTMLElement {
      * @returns {void}
      * @fires ready-links
      */
-    applyStylesSheets(stylesSheets = this.constructor.stylesSheets){
+    applyStylesSheets(stylesSheets = {}){
 
-        const {links, adopted, raw} = stylesSheets;
+        //Add new styles
+        for(const key of ['links', 'adopted', 'raw']) {
+            if(Array.isArray(stylesSheets[key])){
+                this.constructor.stylesSheets[key].push(...stylesSheets[key]);
+            }
+        }
 
-        const $styles = document.createDocumentFragment();
+        //Get styles
+        const {links, adopted, raw} = this.constructor.stylesSheets;
+
+        const $styles = document.createElement('div');
+        $styles.classList.add('styles');
+        $styles.style.display = 'none';
 
         //Links
         const linksPromises = links.map((styleSheet) => {
@@ -83,10 +93,12 @@ class JSONVisualizerBase extends HTMLElement {
                 link.addEventListener('error', () => reject({ link, href: styleSheet, status: 'error' }));
             }
 
-            $styles.prepend(link);
+            $styles.append(link);
 
             return promise;
         });
+
+        this.removeAttribute('ready-links');
 
         Promise.allSettled(linksPromises).then((results) => {
 
@@ -105,13 +117,17 @@ class JSONVisualizerBase extends HTMLElement {
             const styleElement = document.createElement('style');
             styleElement.textContent = style;
 
-            $styles.prepend(styleElement);
+            $styles.append(styleElement);
         });
 
-        this.shadowRoot.prepend($styles);
+        //Clear previous styles
+        this.shadowRoot.querySelector('.styles')?.remove();
 
+        //Add new styles
+        this.shadowRoot.prepend($styles);
+        
         //Adopted
-        this.shadowRoot.adoptedStyleSheets = [...this.shadowRoot.adoptedStyleSheets, ...adopted];
+        this.shadowRoot.adoptedStyleSheets = adopted;
     };
 
     //MARK: Tokenizer
@@ -192,7 +208,9 @@ class JSONVisualizerBase extends HTMLElement {
 
 
     set renderDeep(value){
-		value ? this.setAttribute('render-deep', value) : this.removeAttribute('render-deep');
+		const number = Number(value);
+
+		!Number.isNaN(number) ? this.setAttribute('render-deep', value) : this.removeAttribute('render-deep');
 	}
 	get renderDeep(){
 

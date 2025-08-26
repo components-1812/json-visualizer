@@ -12,8 +12,6 @@ class JSONVisualizer extends JSONVisualizerBase {
 	constructor() {
 		super();
 
-		this.attachShadow({ mode: 'open' });
-		
 		this.shadowRoot.innerHTML = /*html*/`
 			<div class='JSONVisualizer'></div>
 			<slot name='icons'>
@@ -31,13 +29,13 @@ class JSONVisualizer extends JSONVisualizerBase {
 
 	//MARK: callback lifecycle
 	static observedAttributes = [
-		'json', 'src', 'line-numbers', 'toggle-lines', 'folded-message', 
+		'json', 'src', 
+		'line-numbers', 'toggle-lines', 'folded-message',  'render-deep', 'colors', 'urls',
 	];
 
 	attributeChangedCallback(name, oldValue, newValue){
 
 		if(oldValue === newValue || !this.hasAttribute('ready')) return;
-
 
 		if(name === 'src'){
 
@@ -47,9 +45,9 @@ class JSONVisualizer extends JSONVisualizerBase {
 
 			this.renderJSON(this.json);
 		}
-		if(['line-numbers', 'toggle-lines', 'folded-message'].includes(name)){
+		if(['line-numbers', 'toggle-lines', 'folded-message', 'render-deep', 'colors', 'urls'].includes(name)){
 
-			if(this.isConnected) this.updateJSON();
+			this.updateJSON(name);
 		}
 	}
 
@@ -72,14 +70,27 @@ class JSONVisualizer extends JSONVisualizerBase {
 		this.addEventListener('toggle-lines', this.#handletoggleLines);
 
 		//MARK: First Render
-		if(this.src){
+		switch(true){
 
-			this.loadJSON(this.src);
-		}
-		else {
+			case this.hasAttribute('src'):
 
-			this.renderJSON(this.json ?? this.textContent);
+				this.loadJSON(this.src);
+				break;
+
+			case this.hasAttribute('json'):
+
+				this.renderJSON(this.json);
+				break;
+
+			case this.textConten?.length > 0:
+
+				this.renderJSON(this.textContent);
+				break;
+				
+			default:
+				this.renderJSON({message: 'No JSON found. Please provide one.'});
 		}
+
 			
 		this.dispatchEvent(new CustomEvent('ready'));
 		this.setAttribute('ready', '');
@@ -306,32 +317,54 @@ class JSONVisualizer extends JSONVisualizerBase {
 		this.#rootBlock = rootBlock;
 		this.#data = { raw,parsed };
 
-		this.setAttribute('ready-json', '');
+		this.toggleAttribute('ready-json', true);
 		this.dispatchEvent(new CustomEvent('ready-json'));
   	}
-	updateJSON(){
+	updateJSON(name){
 		
-		if(!this.getAttribute('ready-json'))
+		if(!this.hasAttribute('ready-json'))
 			throw new Error('JSON not rendered yet.');
 
 		console.log('update json');
-		
-		this.removeAttribute('ready-json');
 
 		this.#rootBlock.dispose();
 
-		JSONLine.showNumber = this.lineNumbers;
-		JSONLine.showToggle = this.toggleLines;
-		JSONLine.showColors = this.colors.size > 0;
-		JSONLine.showURLs = this.urls.size > 0;
-		JSONLine.colors = this.colors;
-		JSONLine.urls = this.urls;
-		JSONLine.toggleIcon = () => this.getIcon('toggle', {clone: true});
+		if(name === 'line-numbers'){
+			JSONLine.showNumber = this.lineNumbers;
+		}
+		if(name === 'toggle-lines'){
+			JSONLine.showToggle = this.toggleLines;
+		}
+		if(name === 'folded-message'){
+			JSONBlock.showFoldedMessage = this.foldedMessage !== 'none';
+			JSONBlock.foldedMessage = this.foldedMessage;
+		}
+		if(name === 'colors'){
+			JSONLine.showColors = this.colors.size > 0;
+			JSONLine.colors = this.colors;
+		}
+		if(name === 'urls'){
+			JSONLine.showURLs = this.urls.size > 0;
+			JSONLine.urls = this.urls;
+		}
+		if(name === 'render-deep'){
+			const updateRenderDeep = (block) => {
+	
+				if(block instanceof JSONBlock){
+	
+					block.showContent = block.level < this.renderDeep;
+					block.folded = !block.showContent;
+					block.content.at(0).toggleActive = !block.showContent;
+	
+					for(let i = 0; i < block.content.length; i++)
+						updateRenderDeep(block.content.at(i));
+				}
+			}
+	
+			updateRenderDeep(this.#rootBlock);
+		}
 
-		JSONBlock.showFoldedMessage = this.foldedMessage !== 'none';
-		JSONBlock.foldedMessage = this.foldedMessage;
-
-		this.shadowRoot.querySelector('.JSONVisualizer').append( this.rootBlock.render() );
+		this.shadowRoot.querySelector('.JSONVisualizer').append( this.#rootBlock.render() );
 	}
 	clearJSON(){
 		this.removeAttribute('ready-json');
@@ -371,7 +404,7 @@ class JSONVisualizer extends JSONVisualizerBase {
 		if(!block.showContent){
 
 			block.renderContent();
-			block.folded && line.block.unfold();
+			block.folded && block.unfold();
 		}
 		else {
 			block.folded ? block.unfold() : block.fold();

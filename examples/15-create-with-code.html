@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example 14 - incomplete json</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: black;
+        }
+        body {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: minmax(300px, 1fr);
+            gap: 20px;
+        }
+
+        section {
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+            min-width: 0;
+            margin: 0 auto;
+            border: 1px solid rgb(141, 11, 11);
+            overflow: hidden;
+            resize: both;
+        }
+    </style>
+</head>
+<body>
+
+    <script type="module">
+        const mode = 'development';
+
+        const SOURCES = {
+            development: {
+                JSONVisualizer: '../src/JSONVisualizer.js',
+                JSONVisualizerCSS: '../src/JSONVisualizer.css'
+            },
+            production: {
+                JSONVisualizer: "https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.js",
+                JSONVisualizerCSS: 'https://cdn.jsdelivr.net/npm/@components-1812/json-visualizer@0.0.3/src/JSONVisualizer.min.css'
+            }
+        }
+
+        const {JSONVisualizer} = await import(SOURCES[mode].JSONVisualizer);
+        const JSONVisualizerCSS = SOURCES[mode].JSONVisualizerCSS;
+
+        console.log('MODE:', mode);
+        console.log(JSONVisualizer);
+        console.log(JSONVisualizerCSS);
+
+        //Load the stylesheet
+        JSONVisualizer.define('custom-json-visualizer', {links: [JSONVisualizerCSS]});
+
+
+
+        const $visualizer = document.createElement('custom-json-visualizer');
+
+        // $visualizer.lineNumbers = 'none';
+        // $visualizer.toggleLines = 'none';
+        // $visualizer.indentationGuidesLines = 'none';
+
+        $visualizer.json = {
+            name: 'John Doe',
+            age: 30,
+            isStudent: false,
+            contact: {
+                email: 'john.doe@example.com',
+                phone: '123-456-7890'
+            },
+            active: true
+        };
+
+        console.log($visualizer);
+        document.body.appendChild($visualizer);
+
+        window.$visualizer = $visualizer;
+    </script>
+</body>
+</html>

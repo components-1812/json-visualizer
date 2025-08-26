@@ -22,3 +22,6 @@ Thumbs.db
 
 # Optional: environment files
 .env
+
+# 
+dist/*

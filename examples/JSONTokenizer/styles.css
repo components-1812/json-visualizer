@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    height: 100%;
+}
+body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(300px, 1fr);
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+
+    & > * {
+        flex-grow: 1;
+    }
+}
+.Editor {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow: auto;
+    padding: 10px;
+    font-family: Consolas, monospace;
+    font-size: 12pt;
+}

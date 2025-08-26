@@ -77,7 +77,7 @@ export class JSONTokenizer {
             if(char === '{'){   
                 contextStack.push('{');
 
-                this.tokens.push({ type: 'brace-open', value: char, tags: ['brace', 'open'] });
+                this.tokens.push({ type: 'brace-open', value: char, raw: char, tags: ['brace', 'open'] });
 
                 role = 'key';
 
@@ -86,14 +86,14 @@ export class JSONTokenizer {
             if(char === '}'){   
                 contextStack.pop();
 
-                this.tokens.push({ type: 'brace-close', value: char, tags: ['brace', 'close'] });
+                this.tokens.push({ type: 'brace-close', value: char, raw: char, tags: ['brace', 'close'] });
 
                 i++; continue;
             }
             if(char === '['){   
                 contextStack.push('[');
 
-                this.tokens.push({ type: 'bracket-open', value: char, tags: ['bracket', 'open'] });
+                this.tokens.push({ type: 'bracket-open', value: char, raw: char, tags: ['bracket', 'open'] });
 
                 role = 'array-value';
 
@@ -102,13 +102,13 @@ export class JSONTokenizer {
             if(char === ']'){   
                 contextStack.pop();
 
-                this.tokens.push({ type: 'bracket-close', value: char, tags: ['bracket', 'close'] });
+                this.tokens.push({ type: 'bracket-close', value: char, raw: char, tags: ['bracket', 'close'] });
 
                 i++; continue;
             }
             if(char === ','){
 
-                this.tokens.push({ type: 'comma', value: char, tags: ['comma'] });
+                this.tokens.push({ type: 'comma', value: char, raw: char, tags: ['comma'] });
 
                 role = currentContext === '{' ? 'key' : 'array-value';
 
@@ -116,7 +116,7 @@ export class JSONTokenizer {
             }
             if(char === ':'){
 
-                this.tokens.push({ type: 'colon', value: char, tags: ['colon'] });
+                this.tokens.push({ type: 'colon', value: char, raw: char, tags: ['colon'] });
 
                 role = 'value';
 
@@ -129,9 +129,9 @@ export class JSONTokenizer {
 
                 if(result){
 
-                    const { value, endIndex } = result;
+                    const { value, raw, endIndex } = result;
     
-                    const token = { type: 'string', value, tags: ['string', role] };
+                    const token = { type: 'string', value, raw, tags: ['string', role] };
     
                     if(detectURL){
                         const result = this._isURL(value);
@@ -150,9 +150,9 @@ export class JSONTokenizer {
                         }
                     }
     
-                    this.tokens.push({ type: 'string-open', value: char, tags: ['string', 'open', role] });
+                    this.tokens.push({ type: 'string-open', value: char, raw: char, tags: ['string', 'open', role] });
                     this.tokens.push(token);
-                    this.tokens.push({ type: 'string-close', value: char, tags: ['string', 'close', role] });
+                    this.tokens.push({ type: 'string-close', value: char, raw: char, tags: ['string', 'close', role] });
     
                     i = endIndex + 1; continue;
                 }
@@ -164,9 +164,9 @@ export class JSONTokenizer {
 
                 if(result){
 
-                    const { value, endIndex } = result;
+                    const { value, raw, endIndex } = result;
 
-                    this.tokens.push({ type: 'boolean', value, tags: ['boolean', role, value ? 'true' : 'false'] });
+                    this.tokens.push({ type: 'boolean', value, raw, tags: ['boolean', role, value ? 'true' : 'false'] });
     
                     i = endIndex + 1; continue;
                 }
@@ -178,9 +178,9 @@ export class JSONTokenizer {
 
                 if(result){
                     
-                    const { value, endIndex } = result;
+                    const { value, raw, endIndex } = result;
 
-                    this.tokens.push({ type: 'null', value, tags: ['null', role] });
+                    this.tokens.push({ type: 'null', value, raw, tags: ['null', role] });
     
                     i = endIndex + 1; continue;
                 }
@@ -192,18 +192,18 @@ export class JSONTokenizer {
 
                 if(result){
 
-                    const { value, endIndex } = result;
+                    const { value, raw, endIndex } = result;
     
-                    this.tokens.push({ type: 'number', value, tags: ['number', role] });
+                    this.tokens.push({ type: 'number', value, raw,  tags: ['number', role] });
     
                     i = endIndex + 1; continue;
                 }
             }
 
             //Unknown value if noone othe _parse function works
-            const { value, endIndex } = this._parseUnknown(minifyJson, i);
+            const { value, raw, endIndex } = this._parseUnknown(minifyJson, i);
 
-            this.tokens.push({ type: 'unknown', value, tags: ['unknown', role] });
+            this.tokens.push({ type: 'unknown', value, raw, tags: ['unknown', role] });
 
             i = endIndex + 1;
         }   

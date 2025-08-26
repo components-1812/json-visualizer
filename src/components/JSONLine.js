@@ -103,23 +103,29 @@ export class JSONLine {
 	//MARK:renderToken
 	#renderToken(token = {}){
 
-		const { type, value, tags = [] } = token;
+		const { type, value, raw, tags = [] } = token;
 
 		const $span = document.createElement('span');
 		$span.classList.add(`${JSONLine.className}-token`, type);
 		$span.setAttribute('tags', tags.join(' '));
 
-		if(JSONLine.showURLs && token.url && JSONLine.urls.has(token.url)){
+		if(token.type === 'string'){
 
-			$span.append( this.#renderTokenURL(token) );
-		}
-		else if(JSONLine.showColors && token.color && JSONLine.colors.has(token.color)){
-
-			$span.append( this.#renderTokenColor(token) );
+			if(JSONLine.showURLs && token.url && JSONLine.urls.has(token.url)){
+	
+				$span.append( this.#renderTokenURL(token) );
+			}
+			else if(JSONLine.showColors && token.color && JSONLine.colors.has(token.color)){
+	
+				$span.append( this.#renderTokenColor(token) );
+			}
+			else {
+				$span.textContent = raw.slice(1, -1);
+			}
 		}
 		else {
 
-			$span.textContent = String(value);
+			$span.textContent = String(token.value);
 		}
 		
 		return $span;

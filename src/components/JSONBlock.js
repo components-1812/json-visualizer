@@ -130,11 +130,6 @@ export class JSONBlock {
 		
 		this.#node?.remove();
 		this.#node = null;
-
-		this.showContent = false;
-		this.content = [];
-		this.folded = false;
-		this.parent = null;
 	}
 
 	//MARK: Getters

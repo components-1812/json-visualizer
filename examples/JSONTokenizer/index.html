@@ -4,95 +4,19 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>JSONTokenizer playground</title>
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/editor/editor.main.min.css">
-
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-            html {
-                height: 100%;
-            }
-            body {
-                display: flex;
-                width: 100%;
-                height: 100%;
-                background-color: #000;
-
-                & > * {
-                    flex-grow: 1;
-                }
-            }
-            .JSON-Editor {
-                margin: 20px auto;
-                border: 1px solid grey;
-            }
-    
-            .Results textarea {
-                margin: 20px auto;
-                border: 1px solid grey;
-            }
-        </style>
+        <link rel="stylesheet" href="./styles.css">
     </head>
     <body>
 
-        <section> 
-            <div class="JSON-Editor" style="width: 600px; height: 500px;"></div>
-        </section>
+        <textarea class="Editor" cols="30" rows="10" name="editor" id="editor"></textarea>
 
-        <section class="Results">
+        <custom-json-visualizer class="contain"></custom-json-visualizer>
 
-            <textarea style="width: 600px; height: 500px;"></textarea>
-        </section>
+        <custom-offcanvas variant="global" handle-button></custom-offcanvas>
 
-        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
-        <script>
-
-            require.config({ paths: {vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs'} });
-
-            const {promise, resolve} = Promise.withResolvers();
-
-            window.getEditor = promise;
-
-            require(['vs/editor/editor.main'], function () {
-
-                const editor = monaco.editor.create(document.querySelector('.JSON-Editor'), {
-                	value: '',
-                	language: 'json',
-                    theme: 'vs-dark',
-                });
-
-                resolve(editor);
-            });
-		</script>
-        <script type="module">
-            const {JSONTokenizer} = await import('../../src/JSONTokenizer.js');
-    
-            const tokenizer = new JSONTokenizer();
-
-            function debounce(fn, delay) {
-                let timeout;
-                return (...args) => {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => fn(...args), delay);
-                };
-            }
-
-            const onChange = debounce(() => {
-
-                const value = editor.getValue();
-
-                document.querySelector('.Results textarea').value = tokenizer._minifyJSON(value);
-
-            }, 1000);
-
-            const editor = await window.getEditor;
-
-            editor.onDidChangeModelContent(onChange);
-        </script>
+        <script src="https://cdn.jsdelivr.net/npm/@components-1812/offcanvas@0.0.3/dist/index.min.js"></script>
+        <script type="module" src="./script.js"></script>
     </body>
 </html>
